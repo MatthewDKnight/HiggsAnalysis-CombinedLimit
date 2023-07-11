@@ -50,7 +50,8 @@ public:
           _cmatrix(ipow, ibern) = pow(-1.,ipow-ibern)*TMath::Binomial(N,ipow)*TMath::Binomial(ipow,ibern);
         }
       }
-      
+      _xmin = _x.min();
+      _xmax = _x.max();
     }                
                 
 
@@ -62,7 +63,11 @@ public:
     _rvector(other._rvector),
     _bernvector(other._bernvector),
     _powvector(other._powvector),
-    _xvector(other._xvector) {}
+    _xvector(other._xvector) 
+    {
+      _xmin = other._xmin;
+      _xmax = other._xmax;
+    }
   
   
   virtual TObject* clone(const char* newname) const { return new RooBernsteinFast(*this, newname); }
@@ -91,9 +96,9 @@ public:
       }     
       
       _powvector = _cmatrix*_bernvector;
-        
-      double xmin = _x.min();
-      double xmax = _x.max();    
+      
+      double xmax,xmin;
+      xmin = _xmin; xmax = _xmax;
       return (xmax-xmin)*ROOT::Math::Dot(_powvector,_rvector);
 
     }
@@ -111,6 +116,9 @@ protected:
   mutable VType _powvector;  //coefficients in power basis
   mutable VType _xvector;    //vector of powers of x variable
   
+  Double_t _xmin;
+  Double_t _xmax;
+
   Double_t evaluate() const
     {
 
@@ -128,8 +136,8 @@ protected:
         _powvector = _cmatrix*_bernvector;   
       }
       
-      double xmin = _x.min();
-      double xmax = _x.max();
+      double xmax,xmin;
+      xmin = _xmin; xmax = _xmax;
       double x = (_x - xmin) / (xmax - xmin); // rescale to [0,1]
       _xvector[0] = 1.;
       for (int ipow=1; ipow<=N; ++ipow) {
