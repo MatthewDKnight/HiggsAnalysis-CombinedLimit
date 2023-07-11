@@ -119,6 +119,7 @@
 	<class name="RooBernsteinFast<5>" />
 	<class name="RooBernsteinFast<6>" />
 	<class name="RooBernsteinFast<7>" />
+	<class name="RooBernsteinPatch" />
 	<class name="RooBetaFunc_v2" />
 	<class name="RooCB" />
 	<class name="RooCPSHighMassGGH" />
